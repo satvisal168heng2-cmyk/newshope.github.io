@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ហាងលក់ខោអាវអនឡាញបុរសទាន់សម័យ</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Kantumruuy Pro', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- របារខាងលើ (Navbar) -->
+    <nav class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600">SAL<span class="text-black">SHOP</span></a>
+            <div class="relative cursor-pointer" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag text-2xl text-gray-700 hover:text-blue-600"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- បញ្ជីទំនិញដែលមានរូបភាពពិតរបស់អ្នក -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <h2 class="text-2xl font-bold text-center mb-8 border-b-2 border-blue-600 w-48 mx-auto pb-2">ផលិតផលពេញនិយម</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- អាវទី១ -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <img src="shirt1.jpg" class="w-full h-56 object-cover rounded-md mb-4" alt="អាវយឺតក្រឡាការ៉ូ">
+                <div>
+                    <h3 class="font-semibold text-base mb-1">អាវយឺតដៃខ្លី ក្រឡាការ៉ូខៀវ</h3>
+                    <p class="text-blue-600 font-bold mb-3">$12.00</p>
+                </div>
+                <button onclick="addToCart('អាវយឺតដៃខ្លី ក្រឡាការ៉ូខៀវ', 12.00)" class="w-full bg-gray-900 text-white py-2 rounded hover:bg-blue-600 transition text-sm">ថែមចូលកន្ត្រក</button>
+            </div>
+
+            <!-- អាវទី២ -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <img src="shirt2.jpg" class="w-full h-56 object-cover rounded-md mb-4" alt="អាវដៃវែងខ្មៅឆ្នូតក្បាច់">
+                <div>
+                    <h3 class="font-semibold text-base mb-1">អាវដៃវែងខ្មៅ ឆ្នូតក្បាច់បុរាណ</h3>
+                    <p class="text-blue-600 font-bold mb-3">$15.00</p>
+                </div>
+                <button onclick="addToCart('អាវដៃវែងខ្មៅ ឆ្នូតក្បាច់បុរាណ', 15.00)" class="w-full bg-gray-900 text-white py-2 rounded hover:bg-blue-600 transition text-sm">ថែមចូលកន្ត្រក</button>
+            </div>
+
+            <!-- អាវទី៣ -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <img src="shirt3.jpg" class="w-full h-56 object-cover rounded-md mb-4" alt="អាវដៃវែង DAKS">
+                <div>
+                    <h3 class="font-semibold text-base mb-1">អាវដៃវែងខ្មៅ ម៉ូដឆ្នូតការ៉ូធំ</h3>
+                    <p class="text-blue-600 font-bold mb-3">$16.50</p>
+                </div>
+                <button onclick="addToCart('អាវដៃវែងខ្មៅ ម៉ូដឆ្នូតការ៉ូធំ', 16.50)" class="w-full bg-gray-900 text-white py-2 rounded hover:bg-blue-600 transition text-sm">ថែមចូលកន្ត្រក</button>
+            </div>
+
+            <!-- អាវទី៤ -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <img src="shirt4.jpg" class="w-full h-56 object-cover rounded-md mb-4" alt="អាវដៃខ្លីខ្មៅឆ្នូតក្បាច់">
+                <div>
+                    <h3 class="font-semibold text-base mb-1">អាវប៉ូឡូដៃខ្លី ឆ្នូតក្បាច់លឿង</h3>
+                    <p class="text-blue-600 font-bold mb-3">$13.00</p>
+                </div>
+                <button onclick="addToCart('អាវប៉ូឡូដៃខ្លី ឆ្នូតក្បាច់លឿង', 13.00)" class="w-full bg-gray-900 text-white py-2 rounded hover:bg-blue-600 transition text-sm">ថែមចូលកន្ត្រក</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ផ្ទាំងកន្ត្រកទំនិញ (Cart Sidebar) -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h3 class="text-xl font-bold">កន្ត្រកទំនិញ</h3>
+                <i onclick="toggleCart()" class="fas fa-times text-xl cursor-pointer hover:text-blue-600"></i>
+            </div>
+            <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[60vh]">
+                <p class="text-gray-500 text-center py-4">មិនទាន់មានទំនិញ</p>
+            </div>
+        </div>
+        <div class="border-t pt-4">
+            <div class="flex justify-between font-bold text-lg mb-4">
+                <span>សរុប៖</span>
+                <span id="cart-total" class="text-blue-600">$0.00</span>
+            </div>
+            <button onclick="openCheckoutModal()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">បន្តទៅការបង់ប្រាក់</button>
+        </div>
+    </div>
+
+    <!-- ផ្ទាំងទូទាត់ប្រាក់ និងបង្ហាញ QR Code ធនាគារ -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4 text-center text-blue-600">ព័ត៌មានដឹកជញ្ជូន និងទូទាត់ប្រាក់</h3>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1">ឈ្មោះអ្នកទិញ *</label>
+                    <input type="text" id="cust-name" class="w-full border p-2 rounded" placeholder="ឧទាហរណ៍៖ សុខ ចាន់">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">លេខទូរស័ព្ទ *</label>
+                    <input type="text" id="cust-phone" class="w-full border p-2 rounded" placeholder="ឧទាហរណ៍៖ 096XXXXXXX">
+                </div>
+                
+                <!-- ផ្នែកបង្ហាញ QR Code ធនាគារ -->
+                <div class="bg-blue-50 p-4 rounded-lg text-center border border-blue-200 my-4">
+                    <p class="text-sm font-semibold text-blue-900 mb-2">Scan KHQR ដើម្បីទូទាត់ប្រាក់</p>
+                    <img src="https://qrserver.com" alt="KHQR Code" class="mx-auto my-2 border-4 border-white shadow-sm">
+                    <p class="text-sm text-gray-700 mt-2">ទឹកប្រាក់ត្រូវទូទាត់៖ <span id="modal-total" class="font-bold text-red-500">$0.00</span></p>
+                </div>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button onclick="closeCheckoutModal()" class="w-1/2 bg-gray-200 py-2 rounded font-medium">បោះបង់</button>
+                <button onclick="sendOrderToTelegram()" class="w-1/2 bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">បានផ្ទេរប្រាក់ រួចកុម្ម៉ង់</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- របារ Footer ខាងក្រោមសម្រាប់ទាក់ទងតាម Telegram -->
+    <footer class="bg-gray-900 text-white text-center py-6 mt-12">
+        <p class="text-sm mb-2">© 2026 ហាងលក់ខោអាវអនឡាញទាន់សម័យ</p>
+        <a href="https://t.me" target="_blank" class="inline-flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white text-xs px-4 py-2 rounded-full transition">
+            <i class="fab fa-telegram-plane"></i>
+            <span>ឆាតមកកាន់ Telegram: @SAL168HENG2</span>
+        </a>
+    </footer>
+
+    <script>
+        let cart = [];
+        
+        // កំណត់ព័ត៌មាន Telegram Bot របស់អ្នកនៅទីនេះ
+        const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN';
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';
+
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
+        function openCheckoutModal() { 
+            if(cart.length === 0){ alert('សូមរើសទំនិញចូលកន្ត្រកមុននឹងបង់ប្រាក់!'); return; } 
+            let total = 0;
+            cart.forEach(item => total += item.price);
+            document.getElementById('modal-total').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('checkout-modal').classList.remove('hidden'); 
+        }
+        function closeCheckoutModal() { document.getElementById('checkout-modal').classList.add('hidden'); }
+        function addToCart(name, price) { cart.push({name, price}); updateCartUI(); }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            if(cart.length === 0) { container.innerHTML = '<p class="text-gray-500 text-center py-4">មិនទាន់មានទំនិញ</p>'; document.getElementById('cart-total').innerText = '$0.00'; return; }
+            let html = '', total = 0;
+            cart.forEach((item, i) => { total += item.price; html += `<div class="flex justify-between items-center border-b pb-2"><div><h4 class="text-sm font-medium">${item.name}</h4><p class="text-blue-600 text-xs">$${item.price.toFixed(2)}</p></div><i onclick="cart.splice(${i},1);updateCartUI();" class="fas fa-trash text-gray-400 hover:text-red-500 cursor-pointer text-xs"></i></div>`; });
+            container.innerHTML = html;
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function sendOrderToTelegram() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            if(!name || !phone) { alert('សូមបំពេញឈ្មោះ និងលេខទូរស័ព្ទរបស់អ្នក!'); return; }
+
